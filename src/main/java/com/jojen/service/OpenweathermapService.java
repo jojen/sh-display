@@ -2,7 +2,9 @@ package com.jojen.service;
 
 import com.fasterxml.jackson.databind.JsonNode;
 
+import com.jojen.model.TemperatureForecast;
 import com.jojen.model.WeatherForecast;
+import com.jojen.repo.TemperatureForecastRepository;
 import com.jojen.repo.WeatherForecastRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -17,10 +19,10 @@ import java.util.TimeZone;
 import java.util.logging.Logger;
 
 @Service
-public class WeatherforecastService {
+public class OpenweathermapService {
     RestTemplate restTemplate = new RestTemplate();
 
-    Logger log = Logger.getLogger(WeatherforecastService.class.getName());
+    Logger log = Logger.getLogger(OpenweathermapService.class.getName());
 
     @Value("${weatherforecast.APIkey}")
     private String key;
@@ -34,22 +36,35 @@ public class WeatherforecastService {
     @Autowired
     WeatherForecastRepository weatherForecastRepository;
 
+    @Autowired
+    TemperatureForecastRepository temperatureForecastRepository;
+
 
     @PostConstruct
     public void update() {
         log.info("update weather data");
         JsonNode payload = restTemplate.getForObject("https://api.openweathermap.org/data/2.5/onecall?lat={lat}&lon={lon}&units=metric&exclude=current,minutely&appid={key}", JsonNode.class, lat, lon, key);
 
+        for (JsonNode hour : payload.path("hourly")) {
+            LocalDateTime time = getDate(hour.path("dt").asLong());
+            Optional<TemperatureForecast> t = temperatureForecastRepository.findByTime(time);
+            TemperatureForecast tf = new TemperatureForecast();
+            if (t.isPresent()) {
+                tf = t.get();
+            }
+            tf.setTime(time);
+            tf.setValue(hour.path("temp").asDouble());
+            temperatureForecastRepository.save(tf);
+        }
 
         for (JsonNode day : payload.path("daily")) {
-
             LocalDateTime date = getDate(day.path("dt").asLong());
             Optional<WeatherForecast> fco = weatherForecastRepository.findByDate(date);
             WeatherForecast fc = new WeatherForecast();
             if (fco.isPresent()) {
                 fc = fco.get();
             }
-            fc.setDate(getDate(day.path("dt").asLong()));
+            fc.setDate(date);
             fc.setDayTemp(day.path("temp").path("day").asDouble());
             fc.setNightTemp(day.path("temp").path("night").asDouble());
             fc.setEveningTemp(day.path("temp").path("eve").asDouble());
@@ -57,6 +72,9 @@ public class WeatherforecastService {
             fc.setIcon(getIcon(day.path("weather").path(0).path("icon").asText()));
             weatherForecastRepository.save(fc);
         }
+
+
+
     }
 
     private String getIcon(String iconcode) {
