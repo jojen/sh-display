@@ -21,5 +21,5 @@ sudo apt-get install -y default-jdk git cutycapt xvfb python3
 
 sudo mkdir ~/sh-display
 cd ~/sh-display
-sudo git clone https://github.com/jojen/sh-display/release
+sudo git clone https://github.com/jojen/sh-display/tree/main/release
 sudo chmod +x bin/update-screen.sh
