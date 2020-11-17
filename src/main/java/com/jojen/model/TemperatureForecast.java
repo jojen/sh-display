@@ -22,6 +22,8 @@ public class TemperatureForecast {
     @GeneratedValue
     @JsonIgnore
     private Long id;
+    @JsonProperty("x")
     LocalDateTime time;
+    @JsonProperty("y")
     double value;
 }

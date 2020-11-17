@@ -31,6 +31,13 @@ public class ApiController {
     @Autowired
     TemperatureRepository temperatureRepository;
 
+    @Autowired
+    DisplayService displayService;
+
+    @GetMapping(value = "/updateDisplay")
+    public void updateDisplay() {
+        displayService.update();
+    }
 
     @GetMapping(value = "/temperature")
     public List<Temperature> temperature() {

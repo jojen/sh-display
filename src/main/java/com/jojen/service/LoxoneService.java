@@ -17,10 +17,10 @@ public class LoxoneService {
     @PostConstruct
     public void populateDefaultData() {
         LocalDateTime time = LocalDateTime.now().minusDays(3);
-        while (time.isBefore(LocalDateTime.now().plusDays(2))) {
+        while (time.isBefore(LocalDateTime.now())) {
             Temperature t = new Temperature();
             t.setTime(time);
-            t.setValue(new Random().nextInt(10) + 10);
+            t.setValue(new Random().nextInt(3) + 10);
             time = time.plusHours(1);
             temperatureRepository.save(t);
         }

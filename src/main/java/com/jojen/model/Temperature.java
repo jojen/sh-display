@@ -1,6 +1,7 @@
 package com.jojen.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 
 import javax.persistence.Entity;
@@ -18,6 +19,8 @@ public class Temperature {
     @GeneratedValue
     @JsonIgnore
     private Long id;
+    @JsonProperty("x")
     LocalDateTime time;
+    @JsonProperty("y")
     double value;
 }

@@ -1,33 +1,27 @@
 package com.jojen.service;
 
-import com.jojen.model.Temperature;
+
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import java.io.File;
+import java.io.IOException;
 
-import java.time.LocalDateTime;
 
 
 /**
  * Created by JGE on 21.03.2017.
  */
 @Service
-@Slf4j // Automatically adds a logger
+@Slf4j
 public class DisplayService {
-
-    private static final String MESSAGE = "Hello World!";
-
-    public Temperature getSampleTemperature() {
-        Temperature ret = Temperature.builder()
-                .time(LocalDateTime.now())
-                .value(20.0)
-                .build();
-
-        return ret;
-    }
-
-    public String doSomething(String param) {
-
-        log.info("notice start to do something");
-        return MESSAGE + " this is my param " + param;
+    public void update() {
+        ProcessBuilder builder = new ProcessBuilder();
+        builder.command("sh", "-c", "update-screen.sh");
+        builder.directory(new File(System.getProperty("user.home") + "/sh-display/bin"));
+        try {
+            builder.start();
+        } catch (IOException e) {
+            log.warn("cannot run update-screen.sh", e);
+        }
     }
 }
