@@ -7,52 +7,75 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.13.0/moment.min.js"></script>
 
 <div class="container" id="maincontainer">
+
     <div id="chart"></div>
     <script>
+        var tempdata = [(${tempforecast})];
         var options = {
             series: [{
-                name: "temperatur",
-                data: [37, 44, 66, 42, 13, 18, 29]
-            }
-            ],
+                data: tempdata
+
+            }],
             chart: {
-                height: 300,
-                type: 'line',
-                toolbar: {
-                    show: false
-                },
+                id: 'area-datetime',
+                type: 'area',
+                height: 350,
                 zoom: {
-                    enabled: false
-                },
+                    autoScaleYaxis: true
+                }
+            },
+            stroke: {
+                width: [3],
+                curve: 'smooth',
+                dashArray: [0.01]
+            },
+            annotations: {
+                yaxis: [{
+                    y: 30,
+                    borderColor: '#999',
+                    label: {
+                        show: true,
+                        text: 'Support',
+                        style: {
+                            color: "#fff",
+                            background: '#00E396'
+                        }
+                    }
+                }],
+                xaxis: [{
+                    x: new Date('14 Nov 2012').getTime(),
+                    borderColor: '#999',
+                    yAxisIndex: 0,
+                    label: {
+                        show: true,
+                        text: 'Rally',
+                        style: {
+                            color: "#fff",
+                            background: '#775DD0'
+                        }
+                    }
+                }]
             },
             dataLabels: {
                 enabled: false
             },
-            stroke: {
-                width: [8, 8],
-                curve: 'smooth',
-                dashArray: [0.01]
-            },
             markers: {
                 size: 0,
-                hover: {
-                    sizeOffset: 6
-                }
+                style: 'hollow',
             },
             xaxis: {
-                categories: ['01 Jan', '02 Jan', '03 Jan', '04 Jan', '05 Jan', '06 Jan', '07 Jan', '08 Jan', '09 Jan',
-                    '10 Jan', '11 Jan', '12 Jan'
-                ],
+                type: 'datetime',
+                min: new Date('16 Nov 2020').getTime(),
+                tickAmount: 4,
             },
-            grid: {
-                borderColor: '#ffffff',
-            },
-            theme: {
-                monochrome: {
-                    enabled: true,
-                    color: '#000000'
+            tooltip: {
+                x: {
+                    format: 'dd MMM yyyy'
                 }
-            }
+            },
+            fill: {
+                opacity: 0.5
+            },
         };
 
         var chart = new ApexCharts(document.querySelector("#chart"), options);
