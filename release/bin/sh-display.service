@@ -1,0 +1,11 @@
+[Unit]
+Description=SH Display
+After=network.target
+
+[Service]
+ExecStart=java -jar /home/pi/sh-display/release/shdisplay-1.0.jar
+Restart=always
+User=pi
+
+[Install]
+WantedBy=multi-user.target
