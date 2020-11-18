@@ -3,13 +3,60 @@
 <head th:replace="layout :: head"></head>
 <body>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.bundle.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.13.0/moment.min.js"></script>
 
 <div class="container" id="maincontainer">
-    <canvas id="canvas"></canvas>
+    <div id="chart"></div>
     <script>
+        var options = {
+            series: [{
+                name: "temperatur",
+                data: [37, 44, 66, 42, 13, 18, 29]
+            }
+            ],
+            chart: {
+                height: 350,
+                type: 'line',
+                toolbar: {
+                    show: false
+                },
+                zoom: {
+                    enabled: false
+                },
+            },
+            dataLabels: {
+                enabled: false
+            },
+            stroke: {
+                width: [8, 8],
+                curve: 'smooth',
+                dashArray: [0.01]
+            },
+            markers: {
+                size: 0,
+                hover: {
+                    sizeOffset: 6
+                }
+            },
+            xaxis: {
+                categories: ['01 Jan', '02 Jan', '03 Jan', '04 Jan', '05 Jan', '06 Jan', '07 Jan', '08 Jan', '09 Jan',
+                    '10 Jan', '11 Jan', '12 Jan'
+                ],
+            },
+            grid: {
+                borderColor: '#ffffff',
+            },
+            theme: {
+                monochrome: {
+                    enabled: true,
+                    color: '#000000'
+                }
+            }
+        };
 
+        var chart = new ApexCharts(document.querySelector("#chart"), options);
+        chart.render();
     </script>
 
     <div th:replace="layout :: footer"></div>

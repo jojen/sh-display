@@ -35,8 +35,8 @@ public class ApiController {
     DisplayService displayService;
 
     @GetMapping(value = "/updateDisplay")
-    public void updateDisplay() {
-        displayService.update();
+    public void updateDisplay(@RequestParam(value = "source", required = false) String source) {
+        displayService.update(source);
     }
 
     @GetMapping(value = "/temperature")

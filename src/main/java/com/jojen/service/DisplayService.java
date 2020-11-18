@@ -2,10 +2,11 @@ package com.jojen.service;
 
 
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
+
 import java.io.File;
 import java.io.IOException;
-
 
 
 /**
@@ -14,9 +15,12 @@ import java.io.IOException;
 @Service
 @Slf4j
 public class DisplayService {
-    public void update() {
+    public void update(String source) {
+        if (StringUtils.isEmpty(source)) {
+            source = "http://localhost:8080/";
+        }
         ProcessBuilder builder = new ProcessBuilder();
-        builder.command("sh", "-c", "update-screen.sh");
+        builder.command("sh", "update-screen.sh", source);
         builder.directory(new File(System.getProperty("user.home") + "/sh-display/bin"));
         try {
             builder.start();
