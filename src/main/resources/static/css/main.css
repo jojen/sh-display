@@ -1,4 +1,13 @@
 #maincontainer {
-    height: 480px;
-    width: 800px;
+    font-family: 'Cambay', sans-serif;
+}
+
+#chart {
+    height: 250px;
+    width: 600px;
+    float: left;
+}
+
+#upcomingevents li {
+    list-style: none;
 }

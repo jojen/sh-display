@@ -8,12 +8,43 @@
 
 <div class="container" id="maincontainer">
 
-    <div id="chart"></div>
+    <div class="row">
+        <div class="col">
+            <div id="chart"></div>
+        </div>
+        <div class="col">
+            <div id="upcomingevents">
+                <ul>
+                    <li th:each="event : ${upcomingevents}" th:text="${event}"></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+
     <script>
-        var tempdata = [(${tempforecast})];
+        let today = new Date().setHours(0, 0, 0, 0);
+        let d = new Date();
+        d.setDate(d.getDate() - 1);
+        let yesterday = d;
+        yesterday = yesterday.setHours(0, 0, 0, 0);
+        d.setDate(d.getDate() - 1);
+        let daybevoreyesterday = d;
+        daybevoreyesterday = daybevoreyesterday.setHours(0, 0, 0, 0);
+        d = new Date();
+        d.setDate(d.getDate() + 1);
+        let tomorrow = d;
+        tomorrow = tomorrow.setHours(0, 0, 0, 0);
+        d.setDate(d.getDate() + 1);
+        let dayaftertomorrow = d;
+        dayaftertomorrow = dayaftertomorrow.setHours(0, 0, 0, 0);
+
+
         var options = {
             series: [{
-                data: tempdata
+
+                data:
+                    [(${tempforecast})]
 
             }],
             chart: {
@@ -30,43 +61,102 @@
                 dashArray: [0.01]
             },
             annotations: {
-                yaxis: [{
-                    y: 30,
-                    borderColor: '#999',
-                    label: {
-                        show: true,
-                        text: 'Support',
-                        style: {
-                            color: "#fff",
-                            background: '#00E396'
-                        }
-                    }
-                }],
                 xaxis: [{
-                    x: new Date('14 Nov 2012').getTime(),
-                    borderColor: '#999',
+                    x: daybevoreyesterday,
+                    borderColor: '#000',
+                    borderWidth: 4,
                     yAxisIndex: 0,
                     label: {
                         show: true,
-                        text: 'Rally',
                         style: {
-                            color: "#fff",
-                            background: '#775DD0'
+                            color: '#fff',
+                            background: '#000000'
                         }
                     }
-                }]
+                }, {
+                    x: yesterday,
+                    borderColor: '#000',
+                    borderWidth: 4,
+                    yAxisIndex: 0,
+                    label: {
+                        show: true,
+                        style: {
+                            color: '#fff',
+                            background: '#000000'
+                        }
+                    }
+                }, {
+                    x: today,
+                    borderColor: '#000',
+                    borderWidth: 4,
+                    yAxisIndex: 0,
+                    label: {
+                        show: true,
+                        style: {
+                            color: '#fff',
+                            background: '#000000'
+                        }
+                    }
+                },
+                    {
+                        x: tomorrow,
+                        borderColor: '#000',
+                        borderWidth: 4,
+                        yAxisIndex: 0,
+                        label: {
+                            show: true,
+                            style: {
+                                color: '#fff',
+                                background: '#000000'
+                            }
+                        }
+                    },
+
+                    {
+                        x: dayaftertomorrow,
+                        borderColor: '#000',
+                        borderWidth: 4,
+                        yAxisIndex: 0,
+                        label: {
+                            show: true,
+                            style: {
+                                color: '#fff',
+                                background: '#000000'
+                            }
+                        }
+                    }
+                ]
             },
             dataLabels: {
                 enabled: false
             },
-            markers: {
-                size: 0,
-                style: 'hollow',
-            },
+
             xaxis: {
                 type: 'datetime',
-                min: new Date('16 Nov 2020').getTime(),
-                tickAmount: 4,
+                min: daybevoreyesterday,
+                tickAmount: 6,
+                labels: {
+                    show: true,
+                    offsetX: 50,
+                    style: {
+                        fontSize: '20px',
+                        fontFamily: 'Cambay, sans-serif'
+
+                    }
+                }
+            },
+            yaxis: {
+                labels: {
+                    show: true,
+                    formatter: function (value) {
+                        return value + "°";
+                    },
+                    style: {
+                        fontSize: '20px',
+                        fontFamily: 'Cambay, sans-serif'
+
+                    }
+                },
             },
             tooltip: {
                 x: {
@@ -74,7 +164,16 @@
                 }
             },
             fill: {
-                opacity: 0.5
+                color: '#000',
+                opacity: 1,
+            },
+            theme: {
+                monochrome: {
+                    enabled: true,
+                    color: '#000',
+                    shadeTo: 'light',
+                    shadeIntensity: 0.9
+                }
             },
         };
 
