@@ -13,6 +13,11 @@
             <div id="chart"></div>
         </div>
         <div class="col">
+
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
             <div id="upcomingevents">
                 <ul>
                     <li th:each="event : ${upcomingevents}" th:text="${event}"></li>
@@ -23,7 +28,7 @@
 
 
     <script>
-        let today = new Date().setHours(0, 0, 0, 0);
+        let today = new Date();
         let d = new Date();
         d.setDate(d.getDate() - 1);
         let yesterday = d;
@@ -50,7 +55,7 @@
             chart: {
                 id: 'area-datetime',
                 type: 'area',
-                height: 350,
+                height: 200,
                 zoom: {
                     autoScaleYaxis: true
                 }
@@ -137,7 +142,7 @@
                 tickAmount: 6,
                 labels: {
                     show: true,
-                    offsetX: 50,
+                    offsetX: 70,
                     style: {
                         fontSize: '20px',
                         fontFamily: 'Cambay, sans-serif'

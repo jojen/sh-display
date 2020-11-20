@@ -33,7 +33,13 @@ public class GoogleCalendarService {
         ZoneId defaultZoneId = ZoneId.systemDefault();
         Date maxTime = Date.from(LocalDateTime.now().plusDays(7).toLocalDate().atStartOfDay(defaultZoneId).toInstant());
 
-        Events events = googleCalendar.events().list(calendarId).setTimeMin(new DateTime(new Date())).setTimeMax(new DateTime(maxTime)).setMaxResults(10).execute();
+        Events events = googleCalendar.events().list(calendarId)
+                .setTimeMin(new DateTime(new Date()))
+                .setTimeMax(new DateTime(maxTime))
+                .setMaxResults(10)
+                .setOrderBy("startTime")
+                .setSingleEvents(true)
+                .execute();
         for (Event e : events.getItems()) {
             StringBuilder event = new StringBuilder();
             DateTime time = e.getStart().getDateTime();
