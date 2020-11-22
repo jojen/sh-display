@@ -6,187 +6,142 @@
 <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.13.0/moment.min.js"></script>
 
-<div class="container" id="maincontainer">
 
-    <div class="row">
-        <div class="col">
-            <div id="chart"></div>
-        </div>
-        <div class="col">
-
-        </div>
-    </div>
-    <div class="row">
-        <div class="col">
-            <div id="upcomingevents">
-                <ul>
-                    <li th:each="event : ${upcomingevents}" th:text="${event}"></li>
-                </ul>
+<div class="main-container">
+    <div class="f-row">
+        <div class="info">
+            <div class="widget">
+                <div class="temp">5° C</div>
+                außen
+            </div>
+            <div class="widget">
+                <div class="temp">20° C</div>
+                wohnen
+            </div>
+            <div class="widget">
+                <div class="temp">18° C</div>
+                schlafen
             </div>
         </div>
+        <div class="visibledays">
+            <div class="tempdays">
+                <div class="day">-</div>
+                <div class="day">-</div>
+                <div class="day">
+                    <p th:text="${#temporals.format(weatherforecast[3].date, 'EEE')}"></p>
+                    <div class="weathericon">
+                        <img th:src="${weatherforecast[3].icon}">
+                    </div>
+                </div>
+                <div class="day">
+                    <p th:text="${#temporals.format(weatherforecast[2].date, 'EEE')}"></p>
+                    <div class="weathericon">
+                        <img th:src="${weatherforecast[2].icon}">
+                    </div>
+                </div>
+                <div class="day">
+                    <p th:text="${#temporals.format(weatherforecast[1].date, 'EEE')}"></p>
+                    <div class="weathericon">
+                      <img th:src="${weatherforecast[1].icon}">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="tempchart">
+            <div id="chart"></div>
+        </div>
+
+
+    </div>
+    <div class="s-row">
+        <div class="events">
+            <ul>
+                <li th:each="event : ${upcomingevents}" th:text="${event}"></li>
+            </ul>
+        </div>
+        <div class="todos"></div>
     </div>
 
-
-    <script>
-        let today = new Date();
-        let d = new Date();
-        d.setDate(d.getDate() - 1);
-        let yesterday = d;
-        yesterday = yesterday.setHours(0, 0, 0, 0);
-        d.setDate(d.getDate() - 1);
-        let daybevoreyesterday = d;
-        daybevoreyesterday = daybevoreyesterday.setHours(0, 0, 0, 0);
-        d = new Date();
-        d.setDate(d.getDate() + 1);
-        let tomorrow = d;
-        tomorrow = tomorrow.setHours(0, 0, 0, 0);
-        d.setDate(d.getDate() + 1);
-        let dayaftertomorrow = d;
-        dayaftertomorrow = dayaftertomorrow.setHours(0, 0, 0, 0);
+</div>
 
 
-        var options = {
-            series: [{
+<script>
+    // 13:40 Uhr -> .day:first-child  margin-left: -20px;
 
-                data:
-                    [(${tempforecast})]
 
-            }],
-            chart: {
-                id: 'area-datetime',
-                type: 'area',
-                height: 200,
-                zoom: {
-                    autoScaleYaxis: true
-                }
-            },
-            stroke: {
-                width: [3],
-                curve: 'smooth',
-                dashArray: [0.01]
-            },
-            annotations: {
-                xaxis: [{
-                    x: daybevoreyesterday,
-                    borderColor: '#000',
-                    borderWidth: 4,
-                    yAxisIndex: 0,
-                    label: {
-                        show: true,
-                        style: {
-                            color: '#fff',
-                            background: '#000000'
-                        }
-                    }
-                }, {
-                    x: yesterday,
-                    borderColor: '#000',
-                    borderWidth: 4,
-                    yAxisIndex: 0,
-                    label: {
-                        show: true,
-                        style: {
-                            color: '#fff',
-                            background: '#000000'
-                        }
-                    }
-                }, {
-                    x: today,
-                    borderColor: '#000',
-                    borderWidth: 4,
-                    yAxisIndex: 0,
-                    label: {
-                        show: true,
-                        style: {
-                            color: '#fff',
-                            background: '#000000'
-                        }
-                    }
+    var ms = new Date().getTime() - 172800000;
+    var starttime = new Date(ms);
+
+
+    var options = {
+        series: [{
+
+            data:
+                [(${tempforecast})]
+
+        }],
+        chart: {
+            id: 'area-datetime',
+            type: 'area',
+            height: 200,
+            zoom: {
+                autoScaleYaxis: true
+            }
+        },
+        stroke: {
+            width: [3],
+            curve: 'smooth',
+            dashArray: [0.01]
+        },
+        dataLabels: {
+            enabled: false
+        },
+
+        xaxis: {
+            type: 'datetime',
+            min: ms,
+            tickAmount: 6,
+            labels: {
+                show: false,
+            }
+        },
+        yaxis: {
+            labels: {
+                show: true,
+                formatter: function (value) {
+                    return value + "°";
                 },
-                    {
-                        x: tomorrow,
-                        borderColor: '#000',
-                        borderWidth: 4,
-                        yAxisIndex: 0,
-                        label: {
-                            show: true,
-                            style: {
-                                color: '#fff',
-                                background: '#000000'
-                            }
-                        }
-                    },
+                style: {
+                    fontSize: '20px',
+                    fontFamily: 'Cambay, sans-serif'
 
-                    {
-                        x: dayaftertomorrow,
-                        borderColor: '#000',
-                        borderWidth: 4,
-                        yAxisIndex: 0,
-                        label: {
-                            show: true,
-                            style: {
-                                color: '#fff',
-                                background: '#000000'
-                            }
-                        }
-                    }
-                ]
-            },
-            dataLabels: {
-                enabled: false
-            },
-
-            xaxis: {
-                type: 'datetime',
-                min: daybevoreyesterday,
-                tickAmount: 6,
-                labels: {
-                    show: true,
-                    offsetX: 70,
-                    style: {
-                        fontSize: '20px',
-                        fontFamily: 'Cambay, sans-serif'
-
-                    }
                 }
             },
-            yaxis: {
-                labels: {
-                    show: true,
-                    formatter: function (value) {
-                        return value + "°";
-                    },
-                    style: {
-                        fontSize: '20px',
-                        fontFamily: 'Cambay, sans-serif'
-
-                    }
-                },
-            },
-            tooltip: {
-                x: {
-                    format: 'dd MMM yyyy'
-                }
-            },
-            fill: {
+        },
+        tooltip: {
+            x: {
+                format: 'dd MMM yyyy'
+            }
+        },
+        fill: {
+            color: '#000',
+            opacity: 1,
+        },
+        theme: {
+            monochrome: {
+                enabled: true,
                 color: '#000',
-                opacity: 1,
-            },
-            theme: {
-                monochrome: {
-                    enabled: true,
-                    color: '#000',
-                    shadeTo: 'light',
-                    shadeIntensity: 0.9
-                }
-            },
-        };
+                shadeTo: 'light',
+                shadeIntensity: 0.9
+            }
+        },
+    };
 
-        var chart = new ApexCharts(document.querySelector("#chart"), options);
-        chart.render();
-    </script>
+    var chart = new ApexCharts(document.querySelector("#chart"), options);
+    chart.render();
+</script>
 
-    <div th:replace="layout :: footer"></div>
+<div th:replace="layout :: footer"></div>
 </div>
 </body>
 </html>

@@ -1,19 +1,83 @@
-#maincontainer {
+body {
     font-family: 'Cambay', sans-serif;
-    font-size: 16px;
-    padding-left:0;
-    margin-left:0;
-    margin-top:60px;
+    font-size: 18px;
 }
 
-#chart {
+.main-container {
+    margin-top: 80px;
+    width: 800px;
+}
+
+.f-row {
+    width: 800px;
+    margin-bottom: 80px;
+}
+
+.s-row {
+    width: 800px;
+}
+
+.tempchart {
     width: 650px;
-    float: left;
-}
-#upcomingevents ul {
-    padding-left: 18px;
+    display: inline-block;
 }
 
-#upcomingevents li {
+
+.visibledays {
+    position: absolute;
+    width: 650px;
+    overflow: hidden;
+}
+
+.tempdays {
+    width: 800px;
+    height: 250px;
+    display: flex;
+
+}
+.day:first-child {
+    border: none;
+    margin-left: -20px;
+}
+.day {
+    height: 250px;
+    border-left: 2px solid black;
+    text-align: center;
+    width: 150px;
+}
+.weathericon{
+    margin-top: 180px;
+}
+
+.events {
+    width: 400px;
+    display: inline-block;
+}
+
+.todos {
+    width: 400px;
+    display: inline-block;
+}
+
+.info {
+    width: 150px;
+    padding-left: 40px;
+    float: right;
+    display: inline-block;
+}
+
+.temp {
+    font-size: 24px;
+    margin-top: 10px;
+    margin-bottom: -8px;
+}
+
+
+.events ul {
+    padding-left: 18px;
+    padding-top: 10px;
+}
+
+.events li {
     list-style: none;
 }

@@ -3,8 +3,10 @@ package com.jojen.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.jojen.model.TemperatureForecast;
+import com.jojen.model.WeatherForecast;
 import com.jojen.repo.TemperatureForecastRepository;
 import com.jojen.repo.TemperatureRepository;
+import com.jojen.repo.WeatherForecastRepository;
 import com.jojen.service.DisplayService;
 import com.jojen.service.GoogleCalendarService;
 import org.apache.tomcat.jni.Time;
@@ -17,10 +19,7 @@ import java.io.IOException;
 import java.io.StringWriter;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 
 /**
@@ -34,6 +33,9 @@ public class UIController {
 
     @Autowired
     TemperatureRepository temperatureRepository;
+
+    @Autowired
+    WeatherForecastRepository weatherForecastRepository;
 
     @Autowired
     GoogleCalendarService googleCalendarService;
@@ -60,8 +62,9 @@ public class UIController {
 
 
         model.addAttribute("upcomingevents", googleCalendarService.getUpcomingEvents());
-
-
+        List<WeatherForecast> wf = weatherForecastRepository.findByDateBetween(LocalDateTime.now().minusDays(3), LocalDateTime.now().plusDays(3));
+        Collections.reverse(wf);
+        model.addAttribute("weatherforecast", wf);
 
         return "home";
     }

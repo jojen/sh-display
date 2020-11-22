@@ -13,16 +13,11 @@ import java.util.Random;
 public class LoxoneService {
     @Autowired
     TemperatureRepository temperatureRepository;
+    //String uri = http://10.0.0.2/dev/sps/io/Bad%20Temperatur/state;
 
-    @PostConstruct
-    public void populateDefaultData() {
-        LocalDateTime time = LocalDateTime.now().minusDays(3);
-        while (time.isBefore(LocalDateTime.now())) {
-            Temperature t = new Temperature();
-            t.setTime(time);
-            t.setValue(new Random().nextInt(3) + 10);
-            time = time.plusHours(1);
-            temperatureRepository.save(t);
-        }
+
+
+    public void update() {
+
     }
 }
