@@ -40,7 +40,7 @@ public class OpenweathermapService {
     TemperatureForecastRepository temperatureForecastRepository;
 
 
-    @PostConstruct
+
     public void update() {
         log.info("update weather data");
         JsonNode payload = restTemplate.getForObject("https://api.openweathermap.org/data/2.5/onecall?lat={lat}&lon={lon}&units=metric&exclude=current,minutely&appid={key}", JsonNode.class, lat, lon, key);

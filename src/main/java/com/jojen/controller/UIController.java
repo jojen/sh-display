@@ -9,6 +9,7 @@ import com.jojen.repo.TemperatureRepository;
 import com.jojen.repo.WeatherForecastRepository;
 import com.jojen.service.DisplayService;
 import com.jojen.service.GoogleCalendarService;
+import com.jojen.service.LoxoneService;
 import org.apache.tomcat.jni.Time;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -40,6 +41,9 @@ public class UIController {
     @Autowired
     GoogleCalendarService googleCalendarService;
 
+    @Autowired
+    LoxoneService loxoneService;
+
     public static final String MESSAGE = "Hello World UI!";
 
     @Autowired
@@ -48,23 +52,18 @@ public class UIController {
 
     @GetMapping(value = "/")
     public String home(Model model) throws IOException {
-        model.addAttribute("temp", temperatureForecastRepository.findByTimeBetween(LocalDateTime.now().minusDays(3), LocalDateTime.now()));
-
-        List<List<String>> tfl = new ArrayList<>();
-
-        for (TemperatureForecast tf : temperatureForecastRepository.findByTimeBetween(LocalDateTime.now(), LocalDateTime.now().plusDays(2))) {
-            List<String> v = new ArrayList<>();
-            v.add(String.valueOf(Timestamp.valueOf(tf.getTime()).getTime()));
-            v.add(String.valueOf(tf.getValue()));
-            tfl.add(v);
-        }
-        model.addAttribute("tempforecast", tfl);
-
 
         model.addAttribute("upcomingevents", googleCalendarService.getUpcomingEvents());
+        model.addAttribute("upcomingtasks", googleCalendarService.getUpcomingTasks());
+
         List<WeatherForecast> wf = weatherForecastRepository.findByDateBetween(LocalDateTime.now().minusDays(3), LocalDateTime.now().plusDays(3));
         Collections.reverse(wf);
         model.addAttribute("weatherforecast", wf);
+
+        model.addAttribute("opendoors", loxoneService.getOpenDoors());
+        model.addAttribute("tempoutside", loxoneService.getTemperatureOutside());
+        model.addAttribute("tempsleeping", loxoneService.getTemperatureSleeping());
+        model.addAttribute("templiving", loxoneService.getTemperatureLiving());
 
         return "home";
     }

@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -43,12 +44,10 @@ public class ApiController {
 
     @GetMapping(value = "/temperature")
     public List<Temperature> temperature() {
-        return temperatureRepository.findByTimeBetween(LocalDateTime.now().minusDays(3), LocalDateTime.now().plusDays(2));
-    }
-
-    @GetMapping(value = "/temperatureforecast")
-    public List<TemperatureForecast> temperatureforecast() {
-        return temperatureForecastRepository.findByTimeBetween(LocalDateTime.now().minusDays(3), LocalDateTime.now().plusDays(2));
+        List ret = new ArrayList();
+        ret.addAll(temperatureRepository.findByTimeBetween(LocalDateTime.now().minusDays(3), LocalDateTime.now()));
+        ret.addAll(temperatureForecastRepository.findByTimeBetween(LocalDateTime.now(), LocalDateTime.now().plusDays(2)));
+        return ret;
     }
 
 

@@ -2,8 +2,11 @@ package com.jojen.service;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+
+import javax.annotation.PostConstruct;
 
 @Service
 @Slf4j
@@ -18,12 +21,18 @@ public class UpdateService {
     @Autowired
     LoxoneService loxoneService;
 
+    @Autowired
+    private Environment env;
 
 
-    @Scheduled(cron = "0 * * * *")
+    @PostConstruct
+    @Scheduled(cron = "*/30 0 * * * ?")
     public void update() {
-        log.info("update data and display");
+        log.info("update data");
         openweathermapService.update();
-        displayService.update(null);
+        loxoneService.update();
+        if(!env.getActiveProfiles()[0].equals("eu")){
+            displayService.update(null);
+        }
     }
 }

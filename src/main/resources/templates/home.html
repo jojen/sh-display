@@ -3,35 +3,51 @@
 <head th:replace="layout :: head"></head>
 <body>
 
-<script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.13.0/moment.min.js"></script>
+
+<script type="text/javascript" th:src="@{/js/apex.js}"></script>
 
 
 <div class="main-container">
     <div class="f-row">
         <div class="info">
             <div class="widget">
-                <div class="temp">5° C</div>
+                <div class="temp" th:text="${tempoutside}"></div>
                 außen
             </div>
             <div class="widget">
-                <div class="temp">20° C</div>
+                <div class="temp" th:text="${templiving}"></div>
                 wohnen
             </div>
             <div class="widget">
-                <div class="temp">18° C</div>
+                <div class="temp" th:text="${tempsleeping}"></div>
                 schlafen
             </div>
         </div>
         <div class="visibledays">
             <div class="tempdays">
-                <div class="day">-</div>
-                <div class="day">-</div>
+                <div id="day1" class="day">
+                    <span th:if="${#lists.size(weatherforecast)>5}">
+                    <p th:text="${#temporals.format(weatherforecast[5].date, 'EEE')}"></p>
+                    <div class="weathericon">
+                        <img th:src="${weatherforecast[5].icon}">
+                    </div>
+                    </span>
+                </div>
                 <div class="day">
+                    <span th:if="${#lists.size(weatherforecast)>4}">
+                    <p th:text="${#temporals.format(weatherforecast[4].date, 'EEE')}"></p>
+                    <div class="weathericon">
+                        <img th:src="${weatherforecast[4].icon}">
+                    </div>
+                    </span>
+                </div>
+                <div class="day">
+                    <span th:if="${#lists.size(weatherforecast)>3}">
                     <p th:text="${#temporals.format(weatherforecast[3].date, 'EEE')}"></p>
                     <div class="weathericon">
                         <img th:src="${weatherforecast[3].icon}">
                     </div>
+                    </span>
                 </div>
                 <div class="day">
                     <p th:text="${#temporals.format(weatherforecast[2].date, 'EEE')}"></p>
@@ -42,7 +58,7 @@
                 <div class="day">
                     <p th:text="${#temporals.format(weatherforecast[1].date, 'EEE')}"></p>
                     <div class="weathericon">
-                      <img th:src="${weatherforecast[1].icon}">
+                        <img th:src="${weatherforecast[1].icon}">
                     </div>
                 </div>
             </div>
@@ -59,86 +75,24 @@
                 <li th:each="event : ${upcomingevents}" th:text="${event}"></li>
             </ul>
         </div>
-        <div class="todos"></div>
+        <div class="tasks">
+            <ul th:if="${not #lists.isEmpty(upcomingtasks)}">
+                <li><h5>Aktuelle Aufgaben</h5></li>
+                <li th:each="task : ${upcomingtasks}" th:text="${task}"></li>
+            </ul>
+            <ul th:if="${not #lists.isEmpty(opendoors)}">
+                <li><h5>Offene Türen</h5></li>
+                <li th:each="door : ${opendoors}" th:text="${door}"></li>
+            </ul>
+        </div>
     </div>
 
 </div>
 
 
 <script>
-    // 13:40 Uhr -> .day:first-child  margin-left: -20px;
 
 
-    var ms = new Date().getTime() - 172800000;
-    var starttime = new Date(ms);
-
-
-    var options = {
-        series: [{
-
-            data:
-                [(${tempforecast})]
-
-        }],
-        chart: {
-            id: 'area-datetime',
-            type: 'area',
-            height: 200,
-            zoom: {
-                autoScaleYaxis: true
-            }
-        },
-        stroke: {
-            width: [3],
-            curve: 'smooth',
-            dashArray: [0.01]
-        },
-        dataLabels: {
-            enabled: false
-        },
-
-        xaxis: {
-            type: 'datetime',
-            min: ms,
-            tickAmount: 6,
-            labels: {
-                show: false,
-            }
-        },
-        yaxis: {
-            labels: {
-                show: true,
-                formatter: function (value) {
-                    return value + "°";
-                },
-                style: {
-                    fontSize: '20px',
-                    fontFamily: 'Cambay, sans-serif'
-
-                }
-            },
-        },
-        tooltip: {
-            x: {
-                format: 'dd MMM yyyy'
-            }
-        },
-        fill: {
-            color: '#000',
-            opacity: 1,
-        },
-        theme: {
-            monochrome: {
-                enabled: true,
-                color: '#000',
-                shadeTo: 'light',
-                shadeIntensity: 0.9
-            }
-        },
-    };
-
-    var chart = new ApexCharts(document.querySelector("#chart"), options);
-    chart.render();
 </script>
 
 <div th:replace="layout :: footer"></div>

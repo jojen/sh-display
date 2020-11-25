@@ -35,9 +35,15 @@ body {
     display: flex;
 
 }
+/*
+16:52 margin-left: -38
+13:10 margin-left: -19
+
+ */
+
 .day:first-child {
     border: none;
-    margin-left: -20px;
+    margin-left: -19px;
 }
 .day {
     height: 250px;
@@ -49,15 +55,6 @@ body {
     margin-top: 180px;
 }
 
-.events {
-    width: 400px;
-    display: inline-block;
-}
-
-.todos {
-    width: 400px;
-    display: inline-block;
-}
 
 .info {
     width: 150px;
@@ -71,13 +68,19 @@ body {
     margin-top: 10px;
     margin-bottom: -8px;
 }
-
-
-.events ul {
-    padding-left: 18px;
-    padding-top: 10px;
+.events, .tasks {
+    width: 395px;
+    display: inline-block;
+    vertical-align:top;
+    margin:0;
 }
 
-.events li {
+.events ul, .tasks ul {
+    padding-left: 18px;
+    padding-top: 10px;
+    margin-bottom: 6px;
+}
+
+.events li, .tasks li {
     list-style: none;
 }

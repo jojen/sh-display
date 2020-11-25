@@ -122,6 +122,12 @@
         </dependency>
 
         <dependency>
+            <groupId>org.mariadb.jdbc</groupId>
+            <artifactId>mariadb-java-client</artifactId>
+            <version>2.7.1</version>
+        </dependency>
+
+        <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
             <version>2.11.1</version>
@@ -154,6 +160,11 @@
             <artifactId>google-api-services-calendar</artifactId>
             <version>v3-rev411-1.25.0</version>
         </dependency>
+        <dependency>
+            <groupId>com.google.auth</groupId>
+            <artifactId>google-auth-library-oauth2-http</artifactId>
+            <version>0.22.0</version>
+        </dependency>
 
 
 
@@ -180,7 +191,7 @@
 
     <profiles>
         <profile>
-            <id>dev</id>
+            <id>eu</id>
             <activation>
                 <activeByDefault>true</activeByDefault>
             </activation>
@@ -189,7 +200,7 @@
             </properties>
         </profile>
         <profile>
-            <id>test</id>
+            <id>su</id>
             <properties>
                 <spring.profiles.active>su</spring.profiles.active>
             </properties>
@@ -203,27 +214,6 @@
                         <configuration>
                             <profiles>
                                 <profile>su</profile>
-                            </profiles>
-                        </configuration>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
-        <profile>
-            <id>prod</id>
-            <properties>
-                <spring.profiles.active>pu</spring.profiles.active>
-            </properties>
-            <dependencies>
-            </dependencies>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>org.springframework.boot</groupId>
-                        <artifactId>spring-boot-maven-plugin</artifactId>
-                        <configuration>
-                            <profiles>
-                                <profile>pu</profile>
                             </profiles>
                         </configuration>
                     </plugin>

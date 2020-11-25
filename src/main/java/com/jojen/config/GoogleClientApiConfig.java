@@ -12,10 +12,11 @@ import java.io.IOException;
 import java.security.GeneralSecurityException;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.io.ClassPathResource;
+import org.springframework.util.ResourceUtils;
 
 /**
  * Auto-configuration for {@link GoogleCredential}, {@link NetHttpTransport}, and {@link
@@ -41,8 +42,7 @@ public class GoogleClientApiConfig {
      */
     @Bean
     public GoogleCredential googleCredential() throws IOException {
-        File serviceAccount = new ClassPathResource("serviceAccount.json").getFile();
-        return GoogleCredential.fromStream(new FileInputStream(serviceAccount))
+        return GoogleCredential.fromStream(Objects.requireNonNull(GoogleClientApiConfig.class.getClassLoader().getResourceAsStream("serviceAccount.json")))
                 .createScoped(googleOAuth2Scopes());
     }
 

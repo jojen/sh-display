@@ -21,6 +21,8 @@ public class DisplayService {
         }
         ProcessBuilder builder = new ProcessBuilder();
         builder.command("sh", "update-screen.sh", source);
+        
+        log.info("update display");
         builder.directory(new File(System.getProperty("user.home") + "/sh-display/release/bin"));
         try {
             builder.start();
